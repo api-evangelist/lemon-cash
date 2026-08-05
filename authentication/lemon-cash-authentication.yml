@@ -1,0 +1,72 @@
+generated: '2026-08-04'
+method: searched
+source: https://lemoncash.mintlify.app/functions/authenticate
+docs: https://lemoncash.mintlify.app/functions/authenticate
+note: >-
+  Derived mechanically from OpenAPI securitySchemes was not possible — Lemon Cash
+  publishes no OpenAPI. The auth model below is captured verbatim from the Mini App
+  SDK documentation, which is the provider's only public developer contract.
+summary:
+  types: [siwe]
+  standard: EIP-4361 Sign-In with Ethereum
+  api_key_in: []
+  oauth2_flows: []
+  bearer_tokens: false
+  api_keys: false
+schemes:
+- name: authenticate
+  type: siwe
+  standard: https://eips.ethereum.org/EIPS/eip-4361
+  transport: react-native-webview postMessage bridge
+  sdk_function: authenticate
+  sources: [https://lemoncash.mintlify.app/functions/authenticate]
+  description: >-
+    The only supported authentication method for a Lemon Mini App. Presents the
+    Mini App's Terms & Conditions, Privacy Policy and requested claims to the user
+    inside the Lemon Cash app, then signs a SIWE message with the user's wallet and
+    returns the wallet address, granted claims, signature and signed message.
+  parameters:
+  - {name: chainId, type: ChainId, required: true, description: EIP-155 chain id the authentication is bound to}
+  - {name: nonce, type: string, required: false, description: 'Anti-replay nonce; must be at least 8 alphanumeric characters and generated server-side, one per attempt'}
+  - {name: requirements.claims, type: 'ClaimKey[]', required: false, description: Claims requested from the user at consent time}
+  returns:
+  - {field: wallet, type: string, description: The authenticated user's wallet address}
+  - {field: grantedClaims, type: 'MiniAppGrantedClaim[]', description: Key/value pairs for the claims the user granted}
+  - {field: signature, type: string, description: SIWE signature proving wallet ownership}
+  - {field: message, type: string, description: The SIWE message that was signed}
+  contract_wallets:
+    erc6492: true
+    note: >-
+      Supports ERC-6492 so a user can authenticate before their smart-contract
+      wallet is deployed; the wallet is deployed on the user's first transaction.
+rules:
+- Call authenticate as soon as the user enters the Mini App, before deposit, withdraw,
+  transferMoney or callSmartContract.
+- Call authenticate on every entry so the wallet address is always fresh; re-trigger
+  when the user switches chains.
+- Generate the nonce in your backend, store it with an expiry and a used flag, and
+  verify it matches the nonce inside the signed message before trusting the signature.
+- Verify the SIWE signature server-side (the docs use viem verifySiweMessage, which
+  supports ERC-6492 contract wallets).
+consent_claims:
+  model: user-granted claims requested at authentication time
+  docs: https://lemoncash.mintlify.app/types/types#claim-keys
+  claims:
+  - {key: NAME, description: The user's first name}
+  - {key: LAST_NAME, description: The user's last name}
+  - {key: EMAIL, description: The user's email address}
+  - {key: IS_PEP, description: 'Whether the user is a Politically Exposed Person; Argentina only'}
+  - {key: LEMONTAG, description: The user's Lemon Cash tag (username)}
+  - {key: OPERATION_COUNTRY, description: The country where the user operates}
+oauth2: false
+oauth2_note: >-
+  No OAuth 2.0 or OpenID Connect surface. /.well-known/oauth-authorization-server and
+  /.well-known/openid-configuration both return 404 on lemon.me, so no scopes/
+  artifact was written — the ClaimKey set above is the consent surface instead.
+x-evidence:
+  fetched: '2026-08-04'
+  urls:
+  - {url: 'https://lemoncash.mintlify.app/functions/authenticate', http_status: 200}
+  - {url: 'https://lemoncash.mintlify.app/types/types', http_status: 200}
+  - {url: 'https://lemon.me/.well-known/openid-configuration', http_status: 404}
+  - {url: 'https://lemon.me/.well-known/oauth-authorization-server', http_status: 404}

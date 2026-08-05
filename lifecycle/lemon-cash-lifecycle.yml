@@ -1,0 +1,78 @@
+generated: '2026-08-04'
+method: searched
+source: https://github.com/lemonatio/mini-app-sdk/blob/main/CHANGELOG.md
+versioning:
+  scheme: semver
+  applies_to: '@lemoncash/mini-app-sdk'
+  current: 0.1.16
+  current_released: '2026-03-18'
+  first_release: '2025-10-02'
+  release_count: 14
+  pre_1_0: true
+  docs: https://github.com/lemonatio/mini-app-sdk/blob/main/CHANGELOG.md
+  note: >-
+    The SDK is the versioned artifact. There is no versioned HTTP API surface, so no
+    URI-path, header or date-based API version scheme exists. Releases are cut with
+    release-it + conventional commits and tagged v<semver> on GitHub.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  policy_published: false
+  practice: >-
+    Deprecations are announced in the docs page for the affected function, with a
+    stated migration path and a note that the old symbol becomes private in a future
+    release. No dated sunset commitment and no formal written policy page.
+  deprecated_operations:
+  - name: isWebView
+    replaced_by: isLemonWebView
+    status: deprecated
+    announced_in: https://lemoncash.mintlify.app/functions/is-webview
+    note: >-
+      "isWebView has been replaced by isLemonWebView. The old isWebView function is
+      deprecated and will become a private function in a future release." Behaviour
+      change: isLemonWebView is async (Promise<boolean>) and confirms the host app is
+      Lemon, where isWebView was synchronous and only detected any React Native WebView.
+    sunset_date: null
+breaking_changes:
+- version: 0.1.12
+  date: '2026-02-19'
+  change: chainId made required in deposit, withdraw and callSmartContract
+- version: 0.1.14
+  date: '2026-02-27'
+  change: AuthenticateResponse now returns grantedClaims as key/value pairs
+sla:
+  url: null
+  uptime_target: null
+  published: false
+status_page:
+  url: https://status.lemon.me/
+  provider: Atlassian Statuspage
+  history_atom: https://status.lemon.me/history.atom
+  history_rss: https://status.lemon.me/history.rss
+  components_note: >-
+    50+ monitored components covering app core, login, fiat transfers and payouts per
+    country (AR/PE/BR/CO), crypto transfers and trading, Lemon Card, onboarding and
+    identity validation, 2FA, and a dedicated "Prueba de Reservas & Solvencia"
+    component. No component is scoped to a public API or partner API.
+  x-evidence: {fetched: '2026-08-04', http_status: 200}
+roadmap:
+  url: https://lemonminiapps.featurebase.app/en/roadmap
+  feature_requests: https://lemonminiapps.featurebase.app/en
+  provider: Featurebase
+  public: true
+  note: >-
+    Public, votable roadmap for Lemon Mini Apps. Requests are reviewed before
+    appearing on the roadmap.
+  x-evidence: {fetched: '2026-08-04', http_status: 200}
+known_gaps:
+- The developer dashboard is not yet available — a Mini App ID must be requested from
+  the Lemon team by hand (https://lemoncash.mintlify.app/concepts/deeplinks).
+- No deprecation policy page and no Sunset/Deprecation HTTP header contract.
+- No published SLA or uptime target.
+x-evidence:
+  fetched: '2026-08-04'
+  urls:
+  - {url: 'https://raw.githubusercontent.com/lemonatio/mini-app-sdk/main/CHANGELOG.md', http_status: 200}
+  - {url: 'https://status.lemon.me/', http_status: 200}
+  - {url: 'https://lemonminiapps.featurebase.app/en/roadmap', http_status: 200}
+  - {url: 'https://lemoncash.mintlify.app/functions/is-webview', http_status: 200}

@@ -1,0 +1,137 @@
+generated: '2026-08-04'
+method: searched
+source: https://lemoncash.mintlify.app/
+note: >-
+  Lemon Cash publishes no HTTP API, so the usual REST/HTTP standards (RFC 9457,
+  OData, JSON:API, SCIM, pagination conventions) have no surface to conform to. The
+  standards it does implement are Ethereum EIPs referenced by name in its own SDK
+  docs, plus the Argentine virtual-asset regulatory regime it publishes registration
+  under.
+standards:
+- id: eip-4361-siwe
+  name: Sign-In with Ethereum
+  conforms: true
+  evidence: >-
+    The authenticate function is documented as authenticating "using Sign In With
+    Ethereum (SIWE)" and links https://eips.ethereum.org/EIPS/eip-4361. The returned
+    `message` in the docs example is a literal SIWE statement with URI, Version,
+    Chain ID, Nonce and Issued At fields.
+  source: https://lemoncash.mintlify.app/functions/authenticate
+- id: eip-6492
+  name: Signature validation for pre-deploy contract wallets
+  conforms: true
+  evidence: >-
+    "The authenticate method supports ERC-6492 for contract wallets that are not yet
+    deployed." Docs link https://eips.ethereum.org/EIPS/eip-6492.
+  source: https://lemoncash.mintlify.app/functions/authenticate
+- id: eip-155
+  name: Chain identifiers
+  conforms: true
+  evidence: The ChainId enum uses canonical EIP-155 chain ids (ETH 1, POLYGON 137,
+    BASE 8453, POLYGON_AMOY 80002, …).
+  source: https://lemoncash.mintlify.app/types/types
+- id: eip-20
+  name: ERC-20 token standard
+  conforms: true
+  evidence: ContractStandard enum declares ERC20; Permit fields describe ERC-20 token
+    approvals.
+  source: https://lemoncash.mintlify.app/types/types
+- id: permit2
+  name: Uniswap Permit2 signature-based approvals
+  conforms: true
+  evidence: >-
+    callSmartContract accepts a `permits[]` array; the SDK generates the EIP-712
+    signature, handles the one-time ERC-20 approval to Permit2, and executes with the
+    permit signature. Docs link the Uniswap Permit2 overview.
+  source: https://lemoncash.mintlify.app/functions/call-smart-contract
+- id: eip-712
+  name: Typed structured data signing
+  conforms: true
+  evidence: '"The SDK automatically … 1. Generate the EIP-712 signature" for permits.'
+  source: https://lemoncash.mintlify.app/functions/call-smart-contract
+- id: llms-txt
+  name: llms.txt
+  conforms: true
+  evidence: A real llms.txt (and llms-full.txt) is served at the docs host with an H1,
+    a Docs link list and an Optional section.
+  source: https://lemoncash.mintlify.app/llms.txt
+- id: rfc9116-security-txt
+  name: security.txt
+  conforms: partial
+  evidence: >-
+    /.well-known/security.txt returns 200 with a Contact field, but has no Expires
+    field (required by RFC 9116) and embeds instructions inside the Contact value
+    rather than a bare URI.
+  source: https://lemon.me/.well-known/security.txt
+- id: oauth2
+  conforms: false
+  evidence: /.well-known/oauth-authorization-server returns 404; the SDK uses SIWE.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: No HTTP API surface. Errors are an SDK-level {message, code} envelope.
+- id: openapi
+  conforms: false
+  evidence: >-
+    No OpenAPI at the docs host, the mintlify docs root, or api.lemoncash.io (which
+    answers 400 to every anonymous path). The docs site's /api-reference/openapi.json
+    returns the unmodified Mintlify "OpenAPI Plant Store" sample and was rejected.
+- id: asyncapi
+  conforms: false
+  evidence: No AsyncAPI document and no documented webhook surface.
+- id: a2a
+  conforms: false
+  evidence: No agent card at /.well-known/agent-card.json or /.well-known/agent.json
+    on any Lemon host.
+- id: mcp
+  conforms: false
+  evidence: No hosted or published Model Context Protocol server found.
+regulatory:
+  method: searched
+  source: https://lemon.me/terms
+  registrations:
+  - regime: Argentina — Proveedor de Servicios de Activos Virtuales (PSAV)
+    regulator: Comisión Nacional de Valores (CNV)
+    entity: Bay Treasure Caramel S.A.
+    identifier: CUIT 30-71753495-2
+    registration_number: '162'
+    statement: >-
+      "Bay Treasure Caramel S. A, CUIT 30-71753495-2, es un proveedor de servicios de
+      activos virtuales (en adelante, 'PSAV') debidamente inscrito bajo el N° 162 en el
+      Registro de PSAV de la Comisión Nacional de Valores (República Argentina)."
+    source: https://lemon.me/terms
+  related_entities:
+  - {name: Digifin S.A., role: PSP/CP services (Argentina), note: '"Digifin S.A. no es una entidad financiera."'}
+  - {name: Quaestus Advisory S.A., role: 'Agente Asesor Global de Inversión, AAGI N°1098/CNV'}
+  - {name: Alpaca Securities LLC, role: 'US securities clearing and custody, member FINRA/SIPC'}
+  jurisdiction_terms:
+    note: Localized terms, privacy statements, risk disclosures and cookie policies are
+      published per jurisdiction.
+    jurisdictions: [Argentina, Peru, Brazil, Chile, Colombia, El Salvador, 'LATAM (Uruguay, Ecuador, Mexico)']
+    hub: https://lemon.me/terms
+transparency:
+  proof_of_reserves:
+    published: true
+    kind: real-time on-chain proof of reserves plus proof of liabilities
+    open_source: https://github.com/lemonatio/proof-of-liabilities
+    implementation: Merkle Sum Trees
+    license: MIT
+    help_center: https://help.lemon.me/en/collections/3805314-transparencia-en-accion-proof-of-reserves-y-proof-of-liabilities
+    status_component: '"Prueba de Reservas & Solvencia" is a monitored component on https://status.lemon.me/'
+certifications:
+  published: []
+  note: No SOC 2, ISO 27001, PCI DSS, HIPAA or FedRAMP certification is published, and
+    no trust center exists (trust.lemon.me and security.lemon.me do not resolve). The
+    published compliance posture is the CNV PSAV registration and the proof-of-reserves
+    program above.
+x-evidence:
+  fetched: '2026-08-04'
+  urls:
+  - {url: 'https://lemoncash.mintlify.app/functions/authenticate', http_status: 200}
+  - {url: 'https://lemoncash.mintlify.app/types/types', http_status: 200}
+  - {url: 'https://lemon.me/terms', http_status: 200}
+  - {url: 'https://lemoncash.mintlify.app/llms.txt', http_status: 200}
+  - {url: 'https://lemoncash.mintlify.app/api-reference/openapi.json', http_status: 200, rejected: Mintlify default "OpenAPI Plant Store" sample}
+  - {url: 'https://api.lemoncash.io/openapi.json', http_status: 400}

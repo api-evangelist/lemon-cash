@@ -1,0 +1,110 @@
+generated: '2026-08-04'
+method: searched
+source: https://lemoncash.mintlify.app/concepts/webview-communication
+docs: https://lemoncash.mintlify.app/
+surface_note: >-
+  Lemon Cash exposes no HTTP API. Its public developer contract is the Mini App SDK,
+  a message-passing bridge between a web Mini App and the Lemon Cash mobile app. The
+  cross-cutting semantics below are therefore transport-level (postMessage), not
+  HTTP-level — there are no status codes, headers, query parameters or pagination.
+transport:
+  style: react-native-webview message bridge
+  request: "window.ReactNativeWebView.postMessage(JSON.stringify({ action, ...payload }))"
+  response: "webViewRef.current.postMessage(JSON.stringify({ action: '<ACTION>_RESPONSE', data }))"
+  envelope_keys: [action, data]
+  example_action: AUTHENTICATE
+  example_response_action: AUTHENTICATE_RESPONSE
+  serialization: JSON
+  detection: 'await isLemonWebView() — async, confirms the host app is Lemon Cash, not just any React Native WebView'
+  x-evidence: https://lemoncash.mintlify.app/concepts/webview-communication
+authentication:
+  style: SIWE (EIP-4361) at Mini App entry
+  detail: authentication/lemon-cash-authentication.yml
+  ordering_rule: authenticate must be called before deposit, withdraw, transferMoney
+    or callSmartContract, and on every entry to the Mini App.
+user_confirmation:
+  model: every action is user-confirmed in the native app
+  detail: >-
+    The Lemon Cash app prompts the user to confirm before executing any requested
+    action. A user decline resolves the call with result CANCELLED rather than an error.
+  interpolation: >-
+    callSmartContract accepts titleValues and descriptionValues to interpolate
+    {{key}} placeholders into the confirmation title and description the user sees.
+    Unreplaced placeholders are removed from the final text.
+idempotency:
+  supported: false
+  idempotency_key_header: null
+  note: >-
+    No idempotency key, no request-replay contract. The `nonce` on authenticate is an
+    anti-replay measure for the SIWE signature, and the Permit2 `nonce` is an on-chain
+    replay guard — neither makes a retried call idempotent. On-chain calls settle via
+    txHash; fiat transfers via transferId. No `Idempotency` pointer is emitted for this
+    provider.
+replay_protection:
+- mechanism: SIWE nonce
+  applies_to: authenticate
+  rule: >-
+    At least 8 alphanumeric characters, generated in the developer's backend, unique
+    per attempt, stored with an expiry and a used flag, and matched against the nonce
+    inside the signed message before the signature is trusted.
+- mechanism: Permit2 nonce + deadline
+  applies_to: callSmartContract permits
+  rule: Unique nonce plus a UNIX-seconds deadline after which the permit expires.
+async_semantics:
+  model: four-state result union, not exceptions
+  states: [SUCCESS, PENDING, FAILED, CANCELLED]
+  rule: >-
+    SDK calls resolve rather than throw. Branch on `result`; PENDING means the
+    operation is awaiting confirmation and already carries an identifier (txHash or
+    transferId) the caller can observe.
+  correlation_ids:
+  - {field: txHash, returned_by: [deposit, withdraw, callSmartContract], kind: on-chain transaction hash}
+  - {field: transferId, returned_by: [transferMoney], kind: Lemon fiat transfer identifier}
+  detail: errors/lemon-cash-problem-types.yml
+error_envelope:
+  shape: {message: string, code: string}
+  type_name: MiniAppError
+  present_when: result == FAILED
+  detail: errors/lemon-cash-problem-types.yml
+pagination:
+  supported: false
+  note: No list or collection operations exist in the SDK surface.
+field_expansion:
+  supported: false
+metadata:
+  supported: false
+  closest: >-
+    requirements.claims on authenticate is the only caller-supplied shaping input; it
+    selects which user claims are requested at consent time.
+rate_limits:
+  published: false
+  note: No documented rate limits or quota headers. Throughput is bounded by user
+    confirmation in the app, not by a published limit.
+versioning:
+  scheme: semver on the npm package
+  detail: lifecycle/lemon-cash-lifecycle.yml
+  note: No API version negotiation; the installed SDK version is the contract version.
+deeplinking:
+  universal_link_base: https://www.lemon.me/app/mini-apps/
+  in_app_scheme: 'lemoncash://app/mini-apps/'
+  routes:
+  - {name: Mini App detail page, universal: 'https://www.lemon.me/app/mini-apps/detail/:mini-app-id', in_app: 'lemoncash://app/mini-apps/detail/:mini-app-id'}
+  - {name: Launch Mini App, universal: 'https://www.lemon.me/app/mini-apps/webview/:mini-app-id', in_app: 'lemoncash://app/mini-apps/webview/:mini-app-id'}
+  guidance: >-
+    Use the https universal link from external sources (email, social, websites, QR)
+    so it falls back to the web when the app is not installed; use the lemoncash://
+    scheme only for redirects inside the app.
+  mini_app_id: Requested from the Lemon team by hand until the developer dashboard ships.
+  x-evidence: https://lemoncash.mintlify.app/concepts/deeplinks
+cross_links:
+  authentication: authentication/lemon-cash-authentication.yml
+  errors: errors/lemon-cash-problem-types.yml
+  lifecycle: lifecycle/lemon-cash-lifecycle.yml
+  sandbox: sandbox/lemon-cash-sandbox.yml
+  data_model: data-model/lemon-cash-data-model.yml
+x-evidence:
+  fetched: '2026-08-04'
+  urls:
+  - {url: 'https://lemoncash.mintlify.app/concepts/webview-communication', http_status: 200}
+  - {url: 'https://lemoncash.mintlify.app/concepts/deeplinks', http_status: 200}
+  - {url: 'https://lemoncash.mintlify.app/functions/call-smart-contract', http_status: 200}

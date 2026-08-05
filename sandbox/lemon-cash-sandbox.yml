@@ -1,0 +1,68 @@
+generated: '2026-08-04'
+method: searched
+source: https://lemoncash.mintlify.app/testing/faucets
+docs:
+  faucets: https://lemoncash.mintlify.app/testing/faucets
+  environments: https://lemoncash.mintlify.app/testing/changing-dev-environment
+model: testnet-chains
+model_note: >-
+  Lemon Cash ships no test-mode API keys and no hosted mock API — there is no HTTP API.
+  The sandbox is a chain-level separation: a Mini App in development mode points at a
+  testnet chain id and is funded from public testnet faucets. No Lemon-issued test
+  values, test cards or magic identifiers are published.
+environment_switching:
+  how: Set the URL your Mini App connects to from the Mini App details screen in the
+    Lemon Cash app.
+  availability: Only available for Mini Apps in development mode.
+  x-evidence: https://lemoncash.mintlify.app/testing/changing-dev-environment
+test_networks:
+  selected_by: the `chainId` parameter on authenticate, deposit, withdraw and callSmartContract
+  chains:
+  - {name: ARBITRUM_SEPOLIA, chain_id: 421614}
+  - {name: AVALANCHE_FUJI, chain_id: 43113}
+  - {name: BASE_SEPOLIA, chain_id: 84532}
+  - {name: BNB_SMART_CHAIN_TESTNET, chain_id: 97}
+  - {name: CELO_SEPOLIA, chain_id: 11142220}
+  - {name: ETH_HOODI, chain_id: 560048}
+  - {name: ETH_SEPOLIA, chain_id: 11155111}
+  - {name: GNOSIS_CHIADO_TESTNET, chain_id: 10200}
+  - {name: OPTIMISM_SEPOLIA, chain_id: 11155420}
+  - {name: POLYGON_AMOY, chain_id: 80002}
+  - {name: ROOTSTOCK_TESTNET, chain_id: 31}
+  docs_default: >-
+    Every code sample in the quickstart and the authenticate reference uses
+    ChainId.POLYGON_AMOY (80002), the de-facto documented default test chain.
+faucets:
+- name: Circle USDC Faucet
+  url: https://faucet.circle.com/
+  provides: 10 testnet USDC per hour
+  networks: [Ethereum Sepolia, Polygon Amoy, Arbitrum Sepolia, and other supported networks]
+  first_party: false
+- name: Alchemy Faucets
+  url: https://www.alchemy.com/faucets
+  provides: native testnet tokens (ETH, POL, etc.)
+  first_party: false
+guardrails:
+- rule: Deposits are blocked when the Mini App is connected to a testnet.
+  reason: >-
+    Otherwise a deposit would debit real money from the Lemon app and credit test
+    tokens in the Mini App wallet.
+  workaround: Send testnet tokens from a faucet to the Mini App wallet address instead.
+  x-evidence: https://lemoncash.mintlify.app/functions/deposit
+- rule: >-
+    transferMoney destinations (`paymentId` — CBU/CVU in Argentina, CCI in Peru) must
+    be whitelisted by Lemon before use, in any environment.
+  workaround: Contact the Lemon team before changing or adding a paymentId.
+  x-evidence: https://lemoncash.mintlify.app/functions/transfer-money
+not_published:
+- test-mode vs live-mode API key prefixes (no API keys exist)
+- Lemon-issued test wallets, magic addresses or simulator values
+- test clocks / time simulation
+- fixture or event-trigger tooling
+- a self-serve developer dashboard (a Mini App ID must be requested from the Lemon team)
+x-evidence:
+  fetched: '2026-08-04'
+  urls:
+  - {url: 'https://lemoncash.mintlify.app/testing/faucets', http_status: 200}
+  - {url: 'https://lemoncash.mintlify.app/testing/changing-dev-environment', http_status: 200}
+  - {url: 'https://lemoncash.mintlify.app/types/types', http_status: 200}

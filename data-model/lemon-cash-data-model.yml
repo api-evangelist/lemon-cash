@@ -1,0 +1,140 @@
+generated: '2026-08-04'
+method: searched
+source: https://lemoncash.mintlify.app/types/types
+docs: https://lemoncash.mintlify.app/types/types
+derivation_note: >-
+  Derived from the type definitions Lemon publishes for the Mini App SDK, not from an
+  OpenAPI (none exists). Every type, field and enum member below appears verbatim in
+  the docs; nothing was inferred.
+entities:
+- name: MiniAppError
+  kind: object
+  fields:
+  - {name: message, type: string, description: Human-readable error message}
+  - {name: code, type: string, description: Machine-readable error code}
+- name: MiniAppGrantedClaim
+  kind: object
+  fields:
+  - {name: key, type: ClaimKey, description: Which claim was granted}
+  - {name: value, type: string, description: The claim's value}
+- name: AuthenticateData
+  kind: input
+  operation: authenticate
+  fields:
+  - {name: nonce, type: string, required: false}
+  - {name: chainId, type: ChainId, required: true}
+  - {name: requirements.claims, type: 'ClaimKey[]', required: false}
+- name: AuthenticateResponse
+  kind: output
+  operation: authenticate
+  variants:
+  - {result: SUCCESS, data: '{wallet: string, grantedClaims: MiniAppGrantedClaim[], signature: string, message: string}'}
+  - {result: FAILED, error: MiniAppError}
+  - {result: CANCELLED}
+- name: DepositInput
+  kind: input
+  operation: deposit
+  fields:
+  - {name: amount, type: string}
+  - {name: tokenName, type: string}
+  - {name: chainId, type: ChainId}
+- name: WithdrawInput
+  kind: input
+  operation: withdraw
+  fields:
+  - {name: amount, type: string}
+  - {name: tokenName, type: string}
+  - {name: chainId, type: ChainId}
+- name: TransferMoneyData
+  kind: input
+  operation: transferMoney
+  fields:
+  - {name: amount, type: string}
+  - {name: currency, type: Currency}
+  - {name: name, type: string, required: false, description: Optional recipient name}
+  - {name: paymentDestinationInformation, type: PaymentDestinationInformation}
+- name: PaymentDestinationInformation
+  kind: object
+  fields:
+  - {name: paymentId, type: string, required: true, description: 'CBU/CVU for Argentina, CCI for Peru; may carry extra attributes for other banking systems'}
+  constraint: paymentId must be whitelisted by Lemon before use.
+- name: CallSmartContractInput
+  kind: input
+  operation: callSmartContract
+  fields:
+  - {name: contracts, type: 'ContractParams[]'}
+  - {name: titleValues, type: 'Record<string,string>', required: false}
+  - {name: descriptionValues, type: 'Record<string,string>', required: false}
+- name: ContractParams
+  kind: object
+  fields:
+  - {name: contractAddress, type: Address}
+  - {name: functionName, type: string}
+  - {name: functionParams, type: 'unknown[]'}
+  - {name: value, type: string, description: Native currency amount to send; '0' when none}
+  - {name: contractStandard, type: ContractStandard, required: false}
+  - {name: chainId, type: ChainId}
+  - {name: permits, type: 'Permit[]', required: false}
+- name: Permit
+  kind: object
+  standard: Permit2 / EIP-712
+  fields:
+  - {name: owner, type: Address, description: User wallet that owns the tokens}
+  - {name: token, type: Address, description: ERC-20 token to approve}
+  - {name: spender, type: Address, description: Contract authorized to spend; must match contractAddress}
+  - {name: amount, type: string, description: Maximum spend in the token's smallest unit}
+  - {name: deadline, type: string, description: UNIX timestamp in seconds after which the permit expires}
+  - {name: nonce, type: string, description: Unique nonce preventing replay}
+scalars:
+- {name: Address, type: '`0x${string}`'}
+- {name: Hex, type: '`0x${string}`'}
+enums:
+- name: TransactionResult
+  values: [SUCCESS, FAILED, CANCELLED, PENDING]
+- name: ChainId
+  kind: EIP-155 chain identifiers
+  mainnet: {ARBITRUM_ONE: 42161, AVALANCHE: 43114, BASE: 8453, BNB_SMART_CHAIN: 56,
+    CELO: 42220, ETH: 1, GNOSIS: 100, OP_MAINNET: 10, POLYGON: 137, ROOTSTOCK: 30}
+  testnet: {ARBITRUM_SEPOLIA: 421614, AVALANCHE_FUJI: 43113, BASE_SEPOLIA: 84532,
+    BNB_SMART_CHAIN_TESTNET: 97, CELO_SEPOLIA: 11142220, ETH_HOODI: 560048,
+    ETH_SEPOLIA: 11155111, GNOSIS_CHIADO_TESTNET: 10200, OPTIMISM_SEPOLIA: 11155420,
+    POLYGON_AMOY: 80002, ROOTSTOCK_TESTNET: 31}
+- name: TokenName
+  values: [AAVE, ARB, AVAX, AXS, BNB, BTC, CELO, DAI, ETH, GNO, LINK, OP, PAXG, POL,
+    RIF, UNI, USDC, USDT, USDS, XDAI]
+- name: Currency
+  values: [ARS, PEN]
+  note: Fiat currencies supported by transferMoney — Argentine peso and Peruvian sol.
+- name: ContractStandard
+  values: [ERC20]
+- name: ClaimKey
+  values: [NAME, LAST_NAME, EMAIL, IS_PEP, LEMONTAG, OPERATION_COUNTRY]
+  note: IS_PEP is only available for users in Argentina.
+relationships:
+- {from: AuthenticateResponse, to: MiniAppGrantedClaim, kind: has_many, via: data.grantedClaims}
+- {from: MiniAppGrantedClaim, to: ClaimKey, kind: has_one, via: key}
+- {from: CallSmartContractInput, to: ContractParams, kind: has_many, via: contracts}
+- {from: ContractParams, to: Permit, kind: has_many, via: permits}
+- {from: ContractParams, to: ChainId, kind: has_one, via: chainId}
+- {from: ContractParams, to: ContractStandard, kind: has_one, via: contractStandard}
+- {from: TransferMoneyData, to: PaymentDestinationInformation, kind: has_one, via: paymentDestinationInformation}
+- {from: TransferMoneyData, to: Currency, kind: has_one, via: currency}
+- {from: DepositInput, to: ChainId, kind: has_one, via: chainId}
+- {from: WithdrawInput, to: ChainId, kind: has_one, via: chainId}
+- {from: AuthenticateData, to: ChainId, kind: has_one, via: chainId}
+- {from: AuthenticateData, to: ClaimKey, kind: has_many, via: requirements.claims}
+- {from: Permit, to: Address, kind: has_one, via: owner}
+- {from: Permit, to: Address, kind: has_one, via: token}
+- {from: Permit, to: Address, kind: has_one, via: spender}
+identifiers:
+- {field: wallet, format: EVM address (0x-prefixed 40 hex), scope: per user per Mini App}
+- {field: txHash, format: EVM transaction hash, returned_by: [deposit, withdraw, callSmartContract]}
+- {field: transferId, format: 'opaque string (docs example: tx_abc123)', returned_by: [transferMoney]}
+- {field: mini-app-id, format: 'UUID (docs example: cbbe623b-be3d-4796-aa61-c93253a0a3af)', issued_by: Lemon team}
+- {field: paymentId, format: 'CBU/CVU (Argentina) or CCI (Peru)', constraint: must be whitelisted by Lemon}
+x-evidence:
+  fetched: '2026-08-04'
+  urls:
+  - {url: 'https://lemoncash.mintlify.app/types/types', http_status: 200}
+  - {url: 'https://lemoncash.mintlify.app/functions/call-smart-contract', http_status: 200}
+  - {url: 'https://lemoncash.mintlify.app/functions/transfer-money', http_status: 200}

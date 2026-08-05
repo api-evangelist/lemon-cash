@@ -1,23 +1,185 @@
 aid: lemon-cash
 name: Lemon Cash
-description: 'Lemon Cash is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'Lemon Cash is a Latin American digital-money app operated in Argentina
+  by Bay Treasure Caramel S.A., registered as a virtual asset service provider (PSAV
+  N° 162) with the Comisión Nacional de Valores. Founded in 2019 by Marcelo Cavazzoli
+  and Borja Martel Seward, Lemon combines a fiat wallet in pesos and dollars, crypto
+  trading and custody, a Visa debit card with crypto cashback, stock investing and
+  bill payment across Argentina, Peru, Brazil, Colombia, Chile, El Salvador and the
+  wider region. Its public developer surface is the Lemon Mini App SDK: a TypeScript
+  library that lets third-party web apps run inside the Lemon Cash mobile app, sign
+  users in with Sign-In with Ethereum, request user claims, move crypto between the
+  Lemon wallet and a Mini App wallet, transfer fiat to bank accounts, and call smart
+  contracts on eleven mainnet and eleven testnet chains.'
+image: https://framerusercontent.com/images/oY7vruOorqAA7MnBcgpFi2BpIg.png
 url: https://raw.githubusercontent.com/api-evangelist/lemon-cash/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-harvest-source-url: https://forgeglobal.com/lemon-cash_stock/
+x-legal-entity: Bay Treasure Caramel S.A. (CUIT 30-71753495-2)
 specificationVersion: '0.20'
 created: '2026-08-04'
 modified: '2026-08-04'
+x-enrichment:
+  date: '2026-08-04'
+  status: enriched
+  artifacts_added: 19
+  pass: local-v1
 tags:
 - Company
-apis: []
+- Cryptocurrency
+- Digital Wallet
+- Fintech
+- Payments
+- Banking
+- Blockchain
+- Web3
+- Argentina
+- Latin America
+- Mini Apps
+- SDK
+apis:
+- aid: lemon-cash-mini-app-sdk
+  name: Lemon Cash Mini App SDK
+  description: 'The Lemon Mini App SDK is the public developer contract for building
+    a Mini App that runs inside the Lemon Cash mobile app. It is a TypeScript library,
+    not an HTTP API: calls are passed to the native app over the React Native WebView
+    postMessage bridge and every action is confirmed by the user in-app. The surface
+    is six functions — authenticate (Sign-In with Ethereum, EIP-4361, with optional
+    user claims), deposit and withdraw (move tokens between the Lemon wallet and the
+    Mini App wallet), transferMoney (ARS and PEN payouts to whitelisted bank
+    destinations), callSmartContract (single or batched contract calls with optional
+    Permit2 approvals) and isLemonWebView (environment detection).'
+  humanURL: https://lemoncash.mintlify.app/
+  baseURL: https://www.lemon.me/app/mini-apps/
+  x-baseURL-note: 'Not an HTTP API base. This is the documented universal-link base for
+    the Mini App surface (detail/:mini-app-id and webview/:mini-app-id); the SDK itself
+    is transported over the in-app WebView bridge, not over HTTP.'
+  tags:
+  - SDK
+  - Mini Apps
+  - Web3
+  - Wallet
+  - Payments
+  - Authentication
+  properties:
+  - type: Documentation
+    url: https://lemoncash.mintlify.app/
+  - type: APIReference
+    url: https://lemoncash.mintlify.app/functions/authenticate
+  - type: GettingStarted
+    url: https://lemoncash.mintlify.app/quickstart/quickstart
+  - type: DeveloperPortal
+    url: https://lemon.me/build
+  - type: SourceCode
+    url: https://github.com/lemonatio/mini-app-sdk
+  - type: SignUp
+    url: https://tally.so/r/wkMeL1
+  - type: Roadmap
+    url: https://lemonminiapps.featurebase.app/en/roadmap
+  - type: LLMsTxt
+    url: llms/lemon-cash-llms.txt
+  - type: Packages
+    url: packages/lemon-cash-packages.yml
+  - type: SDKs
+    url: packages/lemon-cash-packages.yml
+  - type: Authentication
+    url: authentication/lemon-cash-authentication.yml
+  - type: ErrorCatalog
+    url: errors/lemon-cash-problem-types.yml
+  - type: Conventions
+    url: conventions/lemon-cash-conventions.yml
+  - type: DataModel
+    url: data-model/lemon-cash-data-model.yml
+  - type: Sandbox
+    url: sandbox/lemon-cash-sandbox.yml
+  - type: ChangeLog
+    url: changelog/lemon-cash-changelog.yml
+  - type: Lifecycle
+    url: lifecycle/lemon-cash-lifecycle.yml
+  - type: AgentSkill
+    url: skills/_index.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: VulnerabilityDisclosure
+  url: security/lemon-cash-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/lemon-cash-domain-security.yml
 - type: Website
-  url: https://forgeglobal.com/lemon-cash_stock/
+  url: https://lemon.me/
+- type: DeveloperPortal
+  url: https://lemon.me/build
+- type: Documentation
+  url: https://lemoncash.mintlify.app/
+- type: APIReference
+  url: https://lemoncash.mintlify.app/functions/authenticate
+- type: GettingStarted
+  url: https://lemoncash.mintlify.app/quickstart/quickstart
+- type: SignUp
+  url: https://tally.so/r/wkMeL1
+- type: Support
+  url: https://help.lemon.me/es/
+- type: HelpCenter
+  url: https://wiki.lemon.me/
+- type: Blog
+  url: https://lemon.me/blog
+- type: GitHubOrganization
+  url: https://github.com/lemonatio
+- type: SourceCode
+  url: https://github.com/lemonatio/mini-app-sdk
+- type: Roadmap
+  url: https://lemonminiapps.featurebase.app/en/roadmap
+- type: StatusPage
+  url: https://status.lemon.me/
+- type: Deprecation
+  url: lifecycle/lemon-cash-lifecycle.yml
+- type: TermsOfService
+  url: https://lemon.me/terms
+- type: PrivacyPolicy
+  url: https://lemon.me/arg-terms/declaraci%C3%B3n-de-privacidad
+- type: Compliance
+  url: conformance/lemon-cash-conformance.yml
+- type: Conformance
+  url: conformance/lemon-cash-conformance.yml
+- type: Security
+  url: https://lemon.me/.well-known/security.txt
+- type: SecurityTxt
+  url: well-known/lemon-cash-security.txt
+- type: WellKnown
+  url: well-known/lemon-cash-well-known.yml
+- type: Packages
+  url: packages/lemon-cash-packages.yml
+- type: SDKs
+  url: packages/lemon-cash-packages.yml
+- type: LLMsTxt
+  url: llms/lemon-cash-llms.txt
+- type: Authentication
+  url: authentication/lemon-cash-authentication.yml
+- type: ErrorCatalog
+  url: errors/lemon-cash-problem-types.yml
+- type: Conventions
+  url: conventions/lemon-cash-conventions.yml
+- type: DataModel
+  url: data-model/lemon-cash-data-model.yml
+- type: Sandbox
+  url: sandbox/lemon-cash-sandbox.yml
+- type: ChangeLog
+  url: changelog/lemon-cash-changelog.yml
+- type: Lifecycle
+  url: lifecycle/lemon-cash-lifecycle.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: MediaKit
+  url: https://lemon.me/media-kit
+- type: Careers
+  url: https://lemonsite.teamtailor.com/
+- type: LinkedIn
+  url: https://www.linkedin.com/company/lemonlat
+- type: X
+  url: https://twitter.com/lemonapp_ar
+- type: YouTube
+  url: https://www.youtube.com/c/LemonCashApp

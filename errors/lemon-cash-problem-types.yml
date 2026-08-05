@@ -1,0 +1,71 @@
+generated: '2026-08-04'
+method: searched
+source: https://lemoncash.mintlify.app/types/types
+docs: https://lemoncash.mintlify.app/types/types
+format: sdk-result-envelope
+format_note: >-
+  Not RFC 9457. Lemon Cash publishes no HTTP API, so there are no problem+json
+  responses to derive from. Every Mini App SDK function resolves to a discriminated
+  union keyed on `result` (TransactionResult); failures carry a MiniAppError with a
+  human-readable `message` and a machine-readable `code`. SDK calls resolve rather
+  than throw — the caller must branch on `result`, not catch.
+envelope:
+  discriminator: result
+  error_field: error
+  error_shape:
+    message: string
+    code: string
+  success_field: data
+results:
+- {result: SUCCESS, terminal: true, description: The operation completed successfully. `data` is present.}
+- {result: PENDING, terminal: false, description: 'The operation is awaiting confirmation. `data` is present (txHash or transferId); the caller must poll or observe on-chain.'}
+- {result: FAILED, terminal: true, description: The operation failed. `error` is present.}
+- {result: CANCELLED, terminal: true, description: 'The user cancelled the operation in the Lemon Cash app. No `data`, no `error`.'}
+problems:
+- code: INVALID_SIGNATURE
+  message: Invalid signature
+  result: FAILED
+  source_operation: authenticate
+  meaning: The SIWE signature could not be validated against the wallet address.
+  remediation: >-
+    Re-run authenticate with a fresh backend-generated nonce. Confirm the nonce in
+    the signed message matches the one you issued and has not already been used.
+  x-evidence: https://lemoncash.mintlify.app/functions/authenticate
+- code: INSUFFICIENT_BALANCE
+  message: Insufficient balance
+  result: FAILED
+  source_operation: [deposit, withdraw, callSmartContract, transferMoney]
+  meaning: The wallet does not hold enough of the requested token, native currency or
+    fiat balance to complete the operation.
+  remediation: >-
+    Check the balance before prompting. On testnet, fund the Mini App wallet from a
+    faucet (see sandbox/lemon-cash-sandbox.yml) rather than calling deposit.
+  x-evidence: https://lemoncash.mintlify.app/functions/deposit
+conditions:
+- condition: not-in-lemon-webview
+  detect_with: isLemonWebView
+  meaning: >-
+    authenticate, deposit, withdraw and callSmartContract each verify they are running
+    inside a React Native WebView before messaging the Lemon app, and return an error
+    message when no WebView is detected.
+  remediation: Gate the UI on `await isLemonWebView()` and show a fallback outside Lemon.
+  x-evidence: https://lemoncash.mintlify.app/functions/is-webview
+- condition: deposit-blocked-on-testnet
+  meaning: >-
+    Deposits are blocked when the Mini App is connected to a testnet, so that real
+    money is not debited from the Lemon app in exchange for test tokens.
+  remediation: Use a testnet faucet to fund the Mini App wallet instead of calling deposit.
+  x-evidence: https://lemoncash.mintlify.app/testing/faucets
+- condition: payment-id-not-whitelisted
+  source_operation: transferMoney
+  meaning: >-
+    The `paymentId` destination (CBU/CVU in Argentina, CCI in Peru) must be whitelisted
+    by Lemon before use, or the transfer fails.
+  remediation: Contact the Lemon team to add or change a paymentId before calling transferMoney.
+  x-evidence: https://lemoncash.mintlify.app/functions/transfer-money
+completeness:
+  published_code_registry: false
+  note: >-
+    Lemon documents the error SHAPE and two concrete codes by example, but publishes
+    no exhaustive error-code registry. Only codes that appear verbatim in the docs are
+    listed above; no codes were inferred or invented.

@@ -1,0 +1,52 @@
+generated: '2026-08-04'
+method: searched
+source: https://www.npmjs.com/package/@lemoncash/mini-app-sdk
+notes: >-
+  Lemon publishes exactly one first-party client library: the Mini App SDK, a
+  TypeScript/JavaScript package that talks to the Lemon Cash mobile app over the
+  React Native WebView postMessage bridge. Registries probed with no first-party
+  Lemon Cash result: PyPI, Maven Central, NuGet, pkg.go.dev, RubyGems, Packagist,
+  crates.io.
+packages:
+- language: typescript
+  registry: npm
+  name: '@lemoncash/mini-app-sdk'
+  url: https://www.npmjs.com/package/@lemoncash/mini-app-sdk
+  install: npm install @lemoncash/mini-app-sdk
+  version: 0.1.16
+  released: '2026-03-18'
+  first_published: '2025-10-21'
+  license: MIT
+  repository: https://github.com/lemonatio/mini-app-sdk
+  description: SDK for Lemon Mini App
+  keywords: [lemon, sdk, mini-app, typescript, webview, react-native, blockchain, crypto, defi, wallet]
+  dependencies: []
+  official: true
+  x-evidence:
+    fetched: '2026-08-04'
+    url: https://registry.npmjs.org/@lemoncash%2Fmini-app-sdk
+    http_status: 200
+registries_probed:
+- {registry: npm, result: 1 first-party package}
+- {registry: pypi, query: lemoncash, http_status: 404}
+- {registry: pypi, query: lemon-cash, http_status: 404}
+- {registry: maven-central, result: none}
+- {registry: nuget, result: none}
+- {registry: pkg.go.dev, result: none}
+- {registry: rubygems, result: none}
+- {registry: packagist, result: none}
+- {registry: crates.io, result: none}
+source_repositories:
+- name: mini-app-sdk
+  url: https://github.com/lemonatio/mini-app-sdk
+  language: TypeScript
+  official: true
+  note: The published source of '@lemoncash/mini-app-sdk'.
+- name: proof-of-liabilities
+  url: https://github.com/lemonatio/proof-of-liabilities
+  language: Python
+  license: MIT
+  official: true
+  note: >-
+    Not a client library. Lemon's open-source proof-of-liabilities implementation
+    using Merkle Sum Trees, backing its published proof-of-reserves posture.

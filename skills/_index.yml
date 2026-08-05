@@ -1,0 +1,32 @@
+generated: '2026-08-04'
+method: generated
+source: https://lemoncash.mintlify.app/
+grounding: >-
+  Lemon Cash publishes no OpenAPI, so these skills are grounded in the exported
+  function surface of the Mini App SDK (@lemoncash/mini-app-sdk) as documented at
+  lemoncash.mintlify.app. Every name in `operations` is a real exported SDK function
+  with its own documentation page — none were invented. `operation_kind: sdk-function`
+  marks that these are SDK calls, not OpenAPI operationIds.
+api: '@lemoncash/mini-app-sdk'
+api_docs: https://lemoncash.mintlify.app/
+skills:
+- file: lemon-cash-authenticate-mini-app-user.md
+  name: Authenticate a Lemon Mini App user
+  operations: [isLemonWebView, authenticate]
+  docs: https://lemoncash.mintlify.app/functions/authenticate
+- file: lemon-cash-fund-and-settle-mini-app-wallet.md
+  name: Fund and settle a Lemon Mini App wallet
+  operations: [isLemonWebView, authenticate, deposit, withdraw]
+  docs: https://lemoncash.mintlify.app/functions/deposit
+- file: lemon-cash-call-smart-contract-with-permit.md
+  name: Call a smart contract from a Lemon Mini App
+  operations: [isLemonWebView, authenticate, callSmartContract]
+  docs: https://lemoncash.mintlify.app/functions/call-smart-contract
+- file: lemon-cash-transfer-fiat-to-bank-account.md
+  name: Transfer fiat to a bank account from a Lemon Mini App
+  operations: [isLemonWebView, authenticate, transferMoney]
+  docs: https://lemoncash.mintlify.app/functions/transfer-money
+sdk_surface:
+  functions: [authenticate, deposit, withdraw, transferMoney, callSmartContract, isLemonWebView]
+  deprecated: [isWebView]
+  source: https://lemoncash.mintlify.app/llms.txt

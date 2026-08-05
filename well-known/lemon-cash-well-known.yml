@@ -1,0 +1,57 @@
+generated: '2026-08-04'
+method: probed
+source: https://lemon.me/.well-known/
+hosts_probed: [lemon.me, help.lemon.me, status.lemon.me, wiki.lemon.me, api.lemoncash.io]
+documents:
+- host: https://lemon.me
+  path: /.well-known/security.txt
+  status: 200
+  content_type: text/plain;charset=utf-8
+  file: lemon-cash-security.txt
+  first_party: true
+  note: RFC 9116 style contact file. Not fully conformant — no Expires field, and the
+    Contact value embeds instructions rather than a bare URI/mailto.
+- host: https://lemon.me
+  path: /.well-known/openid-configuration
+  status: 404
+- host: https://lemon.me
+  path: /.well-known/oauth-authorization-server
+  status: 404
+- host: https://lemon.me
+  path: /.well-known/api-catalog
+  status: 404
+- host: https://lemon.me
+  path: /.well-known/ai-plugin.json
+  status: 404
+- host: https://lemon.me
+  path: /.well-known/agent-card.json
+  status: 404
+- host: https://lemon.me
+  path: /.well-known/agent.json
+  status: 404
+- host: https://help.lemon.me
+  path: /.well-known/security.txt
+  status: 200
+  first_party: false
+  note: Vendor-served (Intercom help center), not a Lemon Cash document. Not harvested.
+- host: https://status.lemon.me
+  path: /.well-known/security.txt
+  status: 200
+  first_party: false
+  note: Vendor-served (Atlassian Statuspage), PGP-signed Atlassian policy. Not harvested.
+- host: https://wiki.lemon.me
+  path: /.well-known/security.txt
+  status: 404
+- host: https://api.lemoncash.io
+  path: /.well-known/security.txt
+  status: 400
+  note: Host answers 400 "Fixed response content" to every anonymous path — an edge
+    guard in front of the private mobile-app backend, not a public API surface.
+negative_findings:
+  agent_card: >-
+    No A2A Agent Card at /.well-known/agent-card.json or the legacy
+    /.well-known/agent.json on any probed host. wiki.lemon.me answers 202 with an
+    HTML shell for arbitrary /.well-known/* paths (SPA catch-all) and was rejected
+    as a false positive. No a2a/ artifact was written.
+  oauth_oidc: No OAuth 2.0 authorization-server or OpenID Connect discovery document
+    on any host. Lemon's Mini App SDK authenticates with SIWE (EIP-4361), not OAuth.
