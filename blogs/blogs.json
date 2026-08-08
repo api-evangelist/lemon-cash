@@ -1,0 +1,14 @@
+{
+  "repo": "lemon-cash",
+  "feeds": [
+    {
+      "source": "https://wiki.lemon.me/",
+      "feed_url": "https://wiki.lemon.me/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-08-06T14:08:46Z"
+}
