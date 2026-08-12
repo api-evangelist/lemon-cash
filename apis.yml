@@ -105,6 +105,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: IssueTracker
+  url: https://github.com/lemonatio/mini-app-sdk/issues
 - type: VulnerabilityDisclosure
   url: security/lemon-cash-vulnerability-disclosure.yml
 - type: DomainSecurity
