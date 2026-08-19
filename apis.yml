@@ -17,7 +17,7 @@ x-type: company
 x-source: harvest:secondary-market
 x-harvest-source-url: https://forgeglobal.com/lemon-cash_stock/
 x-legal-entity: Bay Treasure Caramel S.A. (CUIT 30-71753495-2)
-specificationVersion: '0.20'
+specificationVersion: '0.23'
 created: '2026-08-04'
 modified: '2026-08-04'
 x-enrichment:
