@@ -59,6 +59,13 @@ apis:
   - SDK
   - Mini Apps
   - Web3
+  - Wallets
+  - Payments
+  - Authentication
+  tags_raw:
+  - SDK
+  - Mini Apps
+  - Web3
   - Wallet
   - Payments
   - Authentication
