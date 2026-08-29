@@ -11,6 +11,18 @@ description: 'Lemon Cash is a Latin American digital-money app operated in Argen
   users in with Sign-In with Ethereum, request user claims, move crypto between the
   Lemon wallet and a Mini App wallet, transfer fiat to bank accounts, and call smart
   contracts on eleven mainnet and eleven testnet chains.'
+deliveryModel:
+  model: unknown
+  open_source: unknown
+  commercial: true
+  callable_host: false
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - pricing
+  - repository-unlicensed
+  generated: '2026-08-28'
+  method: derived
 image: https://framerusercontent.com/images/oY7vruOorqAA7MnBcgpFi2BpIg.png
 url: https://raw.githubusercontent.com/api-evangelist/lemon-cash/refs/heads/main/apis.yml
 x-type: company
