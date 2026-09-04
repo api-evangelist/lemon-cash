@@ -23,6 +23,20 @@ deliveryModel:
   - repository-unlicensed
   generated: '2026-08-28'
   method: derived
+accessModel:
+  pricing: unknown
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Unknown
+  confidence: low
+  source:
+  - authentication
+  - security
+  - sandbox
+  generated: '2026-09-02'
+  method: derived
 image: https://framerusercontent.com/images/oY7vruOorqAA7MnBcgpFi2BpIg.png
 url: https://raw.githubusercontent.com/api-evangelist/lemon-cash/refs/heads/main/apis.yml
 x-type: company
