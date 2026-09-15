@@ -1,16 +1,14 @@
 aid: lemon-cash
 name: Lemon Cash
-description: 'Lemon Cash is a Latin American digital-money app operated in Argentina
-  by Bay Treasure Caramel S.A., registered as a virtual asset service provider (PSAV
-  N° 162) with the Comisión Nacional de Valores. Founded in 2019 by Marcelo Cavazzoli
-  and Borja Martel Seward, Lemon combines a fiat wallet in pesos and dollars, crypto
-  trading and custody, a Visa debit card with crypto cashback, stock investing and
-  bill payment across Argentina, Peru, Brazil, Colombia, Chile, El Salvador and the
-  wider region. Its public developer surface is the Lemon Mini App SDK: a TypeScript
-  library that lets third-party web apps run inside the Lemon Cash mobile app, sign
-  users in with Sign-In with Ethereum, request user claims, move crypto between the
-  Lemon wallet and a Mini App wallet, transfer fiat to bank accounts, and call smart
-  contracts on eleven mainnet and eleven testnet chains.'
+description: 'Lemon Cash is a Latin American digital-money app operated in Argentina by Bay Treasure Caramel
+  S.A., registered as a virtual asset service provider (PSAV N° 162) with the Comisión Nacional de Valores.
+  Founded in 2019 by Marcelo Cavazzoli and Borja Martel Seward, Lemon combines a fiat wallet in pesos
+  and dollars, crypto trading and custody, a Visa debit card with crypto cashback, stock investing and
+  bill payment across Argentina, Peru, Brazil, Colombia, Chile, El Salvador and the wider region. Its
+  public developer surface is the Lemon Mini App SDK: a TypeScript library that lets third-party web apps
+  run inside the Lemon Cash mobile app, sign users in with Sign-In with Ethereum, request user claims,
+  move crypto between the Lemon wallet and a Mini App wallet, transfer fiat to bank accounts, and call
+  smart contracts on eleven mainnet and eleven testnet chains.'
 deliveryModel:
   model: unknown
   open_source: unknown
@@ -65,22 +63,20 @@ tags:
 - Mini Apps
 - SDK
 apis:
-- aid: lemon-cash-mini-app-sdk
+- aid: lemon-cash:lemon-cash-mini-app-sdk
   name: Lemon Cash Mini App SDK
-  description: 'The Lemon Mini App SDK is the public developer contract for building
-    a Mini App that runs inside the Lemon Cash mobile app. It is a TypeScript library,
-    not an HTTP API: calls are passed to the native app over the React Native WebView
-    postMessage bridge and every action is confirmed by the user in-app. The surface
-    is six functions — authenticate (Sign-In with Ethereum, EIP-4361, with optional
-    user claims), deposit and withdraw (move tokens between the Lemon wallet and the
-    Mini App wallet), transferMoney (ARS and PEN payouts to whitelisted bank
-    destinations), callSmartContract (single or batched contract calls with optional
-    Permit2 approvals) and isLemonWebView (environment detection).'
+  description: 'The Lemon Mini App SDK is the public developer contract for building a Mini App that runs
+    inside the Lemon Cash mobile app. It is a TypeScript library, not an HTTP API: calls are passed to
+    the native app over the React Native WebView postMessage bridge and every action is confirmed by the
+    user in-app. The surface is six functions — authenticate (Sign-In with Ethereum, EIP-4361, with optional
+    user claims), deposit and withdraw (move tokens between the Lemon wallet and the Mini App wallet),
+    transferMoney (ARS and PEN payouts to whitelisted bank destinations), callSmartContract (single or
+    batched contract calls with optional Permit2 approvals) and isLemonWebView (environment detection).'
   humanURL: https://lemoncash.mintlify.app/
   baseURL: https://www.lemon.me/app/mini-apps/
-  x-baseURL-note: 'Not an HTTP API base. This is the documented universal-link base for
-    the Mini App surface (detail/:mini-app-id and webview/:mini-app-id); the SDK itself
-    is transported over the in-app WebView bridge, not over HTTP.'
+  x-baseURL-note: Not an HTTP API base. This is the documented universal-link base for the Mini App surface
+    (detail/:mini-app-id and webview/:mini-app-id); the SDK itself is transported over the in-app WebView
+    bridge, not over HTTP.
   tags:
   - SDK
   - Mini Apps
